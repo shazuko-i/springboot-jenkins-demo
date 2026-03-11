@@ -7,10 +7,10 @@ pipeline {
     }
 
     tools {
-            // Name must match what you configured in Jenkins → Global Tool Configuration
-            maven 'Maven 3'
-            jdk 'JDK 17'
-        }
+        // Must match Jenkins Global Tool Configuration
+        maven 'Maven 3'
+        jdk 'JDK 17'
+    }
 
     stages {
         stage('Checkout Source') {
@@ -25,11 +25,14 @@ pipeline {
             }
         }
 
-        stage('Deploy Application') {
+        stage('Deploy WAR to Tomcat') {
             steps {
                 bat """
-                if not exist "%DEPLOY_DIR%" mkdir "%DEPLOY_DIR%"
-                xcopy /E /Y * "%DEPLOY_DIR%"
+                REM Ensure webapps folder exists
+                if not exist "%TOMCAT_WEBAPPS%" mkdir "%TOMCAT_WEBAPPS%"
+
+                REM Copy the WAR to Tomcat
+                copy target\\%WAR_NAME% "%TOMCAT_WEBAPPS%\\%WAR_NAME%"
                 """
             }
         }
