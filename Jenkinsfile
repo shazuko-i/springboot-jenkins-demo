@@ -2,33 +2,36 @@ pipeline {
     agent any
 
     environment {
-        DEPLOY_DIR = 'C:\\Program Files\\apache-tomcat-10.1.52\\webapps\\php-demo'
+        TOMCAT_WEBAPPS = 'C:\\Program Files\\apache-tomcat-10.1.52\\webapps'
+        WAR_NAME = 'springboot-jenkins-demo.war'
     }
 
     stages {
-
         stage('Checkout Source') {
             steps {
                 checkout scm
             }
         }
 
-        stage('Deploy Application') {
+        stage('Build WAR') {
             steps {
-                bat """
-                if not exist "%DEPLOY_DIR%" mkdir "%DEPLOY_DIR%"
-                xcopy /E /Y * "%DEPLOY_DIR%"
-                """
+                bat 'mvn clean package'
             }
         }
 
+        stage('Deploy to Tomcat') {
+            steps {
+                bat """
+                xcopy /Y target\\%WAR_NAME% "%TOMCAT_WEBAPPS%\\%WAR_NAME%"
+                """
+            }
+        }
     }
 
     post {
         success {
             echo 'Deployment completed successfully.'
         }
-
         failure {
             echo 'Deployment failed.'
         }
