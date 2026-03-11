@@ -52,6 +52,9 @@
     </dependencies>
 
     <build>
+        <finalName>
+            JenkinsWarFile
+        </finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

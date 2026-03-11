@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         TOMCAT_WEBAPPS = 'C:\\Program Files\\apache-tomcat-10.1.52\\webapps'
-        WAR_NAME = 'springboot-jenkins-demo.war'
+        WAR_NAME = 'JenkinsWarFile.war'
     }
 
     tools {
@@ -25,10 +25,11 @@ pipeline {
             }
         }
 
-        stage('Deploy to Tomcat') {
+        stage('Deploy Application') {
             steps {
                 bat """
-                copy /Y target\\%WAR_NAME% "%TOMCAT_WEBAPPS%\\%WAR_NAME%"
+                if not exist "%DEPLOY_DIR%" mkdir "%DEPLOY_DIR%"
+                xcopy /E /Y * "%DEPLOY_DIR%"
                 """
             }
         }
