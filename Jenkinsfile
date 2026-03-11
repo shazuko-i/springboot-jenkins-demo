@@ -28,7 +28,7 @@ pipeline {
         stage('Deploy to Tomcat') {
             steps {
                 bat """
-                xcopy /Y target\\%WAR_NAME% "%TOMCAT_WEBAPPS%\\%WAR_NAME%"
+                copy /Y target\\%WAR_NAME% "%TOMCAT_WEBAPPS%\\%WAR_NAME%"
                 """
             }
         }
