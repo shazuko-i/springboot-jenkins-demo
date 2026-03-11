@@ -6,6 +6,12 @@ pipeline {
         WAR_NAME = 'springboot-jenkins-demo.war'
     }
 
+    tools {
+            // Name must match what you configured in Jenkins → Global Tool Configuration
+            maven 'Maven 3'
+            jdk 'JDK 17'
+        }
+
     stages {
         stage('Checkout Source') {
             steps {
